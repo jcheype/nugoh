@@ -1,5 +1,7 @@
 package nugoh.scripting;
 
+import groovy.util.GroovyScriptEngine;
+import groovy.util.ResourceException;
 import nugoh.sdk.ActionInit;
 import nugoh.sdk.PojoFactory;
 import nugoh.util.watcher.FolderWatcher;
@@ -16,6 +18,7 @@ import javax.script.ScriptException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,17 +34,36 @@ public class ScriptingActivator implements BundleActivator {
     private final Logger logger = LoggerFactory.getLogger(ScriptingActivator.class);
     private final Map<String, ServiceRegistration> serviceRegistrationMap = new HashMap();
     private Thread folderWatcherThread;
+    private String scriptFolderPath = System.getProperty("nugoh.script", "scripts");
 
     private BundleContext bundleContext;
     private ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
 
-    private PojoFactory pojoFromScript(final File file) throws ScriptException, FileNotFoundException {
-        PojoFactory pojoFactory = new PojoFactory() {
+    private PojoFactory getGroovyPojoFactory(String filename) throws groovy.util.ScriptException, ResourceException, IOException {
+        GroovyScriptEngine gse = new GroovyScriptEngine(scriptFolderPath,
+                this.getClass().getClassLoader());
+        final Class groovyClass = gse.loadScriptByName(filename);
+        return new PojoFactory() {
+            @Override
+            public Object newInstance() throws Exception {
+                return groovyClass.newInstance();
+            }
+        };
+    }
+
+    private PojoFactory pojoFromScript(final File file) throws Exception {
+        final String filename = file.getName();
+        final String ext = filename.substring(filename.lastIndexOf('.') + 1);
+        
+        PojoFactory pojoFactory;
+        if("groovy".equals(ext)){
+            pojoFactory = getGroovyPojoFactory(filename);
+        }
+        else{
+            pojoFactory = new PojoFactory() {
 
             @Override
             public Object newInstance() throws Exception {
-                String filename = file.getName();
-                String ext = filename.substring(filename.lastIndexOf('.') + 1);
                 logger.debug("searching engine for ext: " + ext);                
                 final ScriptEngine engine = scriptEngineManager.getEngineByExtension(ext);
                 if (engine == null) {
@@ -53,7 +75,8 @@ public class ScriptingActivator implements BundleActivator {
                 Invocable inv = (Invocable) engine;
                 return inv.getInterface(ActionInit.class);
             }
-        };
+            };
+        }
         return pojoFactory;
     }
 
@@ -66,7 +89,7 @@ public class ScriptingActivator implements BundleActivator {
     @Override
     public void start(BundleContext bundleContext) throws Exception {
         this.bundleContext = bundleContext;
-        String scriptFolderPath = System.getProperty("nugoh.script", "scripts");
+        
         File scriptFolder = new File(scriptFolderPath);
         if (!scriptFolder.isDirectory()) {
             throw new IllegalStateException("parameter \"nugoh.script\" must point to a directory: " + scriptFolderPath);

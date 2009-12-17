@@ -8,5 +8,7 @@ Bundle-SymbolicName:\
   nugoh.scripting
 
 Import-Package:\
- *
+  *
 
+DynamicImport-Package:\
+  *
