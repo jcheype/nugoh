@@ -1,0 +1,12 @@
+Bundle-Activator:\
+  nugoh.restful.RestfulActivator
+
+Bundle-Version:\
+  ${pom.version}
+
+Bundle-SymbolicName:\
+  nugoh.restful
+
+Import-Package:\
+ *
+

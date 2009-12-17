@@ -1,0 +1,9 @@
+<test>
+    <action id="flow1" service="sample" name="foo" />
+    <action id="flow2" service="workflow">
+        <action service="sample" name="foo" />
+        <action service="sample" name="bar" />
+        <action service="sample" name="foobar" />
+
+    </action>
+</test>

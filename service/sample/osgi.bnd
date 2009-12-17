@@ -1,0 +1,9 @@
+Bundle-Version:\
+  ${pom.version}
+
+Bundle-SymbolicName:\
+  nugoh.service.sample
+
+Import-Package:\
+ *
+

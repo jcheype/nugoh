@@ -1,0 +1,12 @@
+Bundle-Activator:\
+  nugoh.bundleTester.BundleTesterActivator
+
+Bundle-Version:\
+  ${pom.version}
+
+Bundle-SymbolicName:\
+  nugoh.bundleTester
+
+Import-Package:\
+ *
+

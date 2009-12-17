@@ -1,0 +1,15 @@
+<test>
+    <action id="flow1" service="workflow" >
+        <action service="xslt" xsl="file.xsl"/>
+        <action service="template" template="toto.tpl"/>
+        <action service="other" other="test"/>
+    </action>
+
+    <action id="flow2" service="workflow" name="foo" >
+        <action service="test" test="zzz"/>
+        <action service="http" url="http://localhost/"/>
+    </action>
+
+    <action id="testOsgi" service="test" name="foo" />
+
+</test>

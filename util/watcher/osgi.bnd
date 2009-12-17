@@ -1,0 +1,11 @@
+Bundle-Version:\
+  ${pom.version}
+
+Bundle-SymbolicName:\
+  nugoh.util.watcher  
+
+Import-Package:\
+  *
+
+Export-Package:\
+  nugoh.util.watcher

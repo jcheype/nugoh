@@ -1,0 +1,12 @@
+Bundle-Activator:\
+  nugoh.scripting.ScriptingActivator
+
+Bundle-Version:\
+  ${pom.version}
+
+Bundle-SymbolicName:\
+  nugoh.scripting
+
+Import-Package:\
+ *
+

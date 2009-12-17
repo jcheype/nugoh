@@ -1,0 +1,11 @@
+Bundle-Version:\
+  ${pom.version}
+
+Bundle-SymbolicName:\
+  nugoh.sdk
+
+Import-Package:\
+ *
+
+Export-Package:\
+ nugoh.sdk
