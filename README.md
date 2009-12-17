@@ -36,6 +36,13 @@ The javascript must contain 2 methods:
     function init(){}
     function run(contextMap){}
 
+### Groovy action service
+Just add a groovy class file in the runner/scripts folder it will be automatically launch/updated
+The class mush contain a run and optionally an init methods:
+
+    def init(){}
+    def run(Map contextMap){}
+
 More component will coming soon.
 
 Performance / Availability
