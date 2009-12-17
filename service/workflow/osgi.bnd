@@ -5,5 +5,13 @@ Bundle-SymbolicName:\
   nugoh.service.workflow
 
 Import-Package:\
- *
+ *;resolution:=optional
 
+Embed-Transitive:\
+  true
+
+Embed-Dependency:\
+  *;scope=compile
+
+DynamicImport-Package:\
+  sun.misc.*

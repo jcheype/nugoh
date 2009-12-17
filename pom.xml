@@ -87,4 +87,18 @@
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>
     </properties>
+
+    <distributionManagement>
+      <repository>
+        <id>archiva.internal</id>
+        <name>Internal Release Repository</name>
+        <url>http://213.186.46.48:9999/archiva/repository/internal/</url>
+      </repository>
+      <snapshotRepository>
+        <id>archiva.snapshots</id>
+        <name>Internal Snapshot Repository</name>
+        <url>http://213.186.46.48:9999/archiva/repository/snapshots/</url>
+      </snapshotRepository>
+    </distributionManagement>
+    
 </project>
