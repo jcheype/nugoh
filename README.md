@@ -5,12 +5,14 @@ nugoh: simple but powerful integration tool
 In order to run nugoh you will need to install [Pax Runner](http://paxrunner.ops4j.org)
 
 Once installed just run:
->  pax-run.sh "--profiles=log,compendium,spring.dm,config" "--repositories=+http://213.186.46.48:9999/archiva/repository/snapshots/@snapshots" "--bootDelegation=sun.*,com.sun.*" "http://github.com/jcheype/nugoh/raw/master/paxrunner/nugoh.conf"
+
+    pax-run.sh "--profiles=log,compendium,spring.dm,config" "--repositories=+http://213.186.46.48:9999/archiva/repository/snapshots/@snapshots" "--bootDelegation=sun.*,com.sun.*" "http://github.com/jcheype/nugoh/raw/master/paxrunner/nugoh.conf"
 
 
 Configuration
 --------------------
 There 2 configuration file:
+
  *  [config.xml](http://github.com/jcheype/nugoh/blob/master/paxrunner/runner/config.xml) :
     this file contains the flows definitions in xml
  *  [restful.properties](http://github.com/jcheype/nugoh/blob/master/paxrunner/runner/restful.properties):
