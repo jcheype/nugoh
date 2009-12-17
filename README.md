@@ -11,7 +11,7 @@ Once installed just run:
 
 Configuration
 --------------------
-There 2 configuration file:
+There 2 configuration files:
 
  *  [config.xml](http://github.com/jcheype/nugoh/blob/master/paxrunner/runner/config.xml) :
     this file contains the flows definitions in xml
@@ -32,6 +32,7 @@ See [sample](http://github.com/jcheype/nugoh/tree/master/service/sample/) for a 
 ### Javscript action service
 Just add a javascript file in the runner/scripts folder it will be automatically launch/updated
 The javascript must contain 2 methods:
+
  *  function init(){}
  *  function run(contextMap){}
 
