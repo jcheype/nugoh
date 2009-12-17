@@ -33,8 +33,8 @@ See [sample](http://github.com/jcheype/nugoh/tree/master/service/sample/) for a 
 Just add a javascript file in the runner/scripts folder it will be automatically launch/updated
 The javascript must contain 2 methods:
 
- *  function init(){}
- *  function run(contextMap){}
+    function init(){}
+    function run(contextMap){}
 
 More component will coming soon.
 
