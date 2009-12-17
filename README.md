@@ -15,16 +15,16 @@ There 2 configuration files:
 
  *  [config.xml](http://github.com/jcheype/nugoh/blob/master/paxrunner/runner/config.xml) :
     this file contains the flows definitions in xml
+ *  [restful.properties](http://github.com/jcheype/nugoh/blob/master/paxrunner/runner/restful.properties):
+    this file contain action id to call and Restful url definition, parameters are set in the context map
+
 
     <action id="myflow" service="workflow"> <!-- id attribut means that this action wil be registred in OSGI -->
         <action service="test.js" />
         <action service="sample" name="bar" condition="firstname == 'foo'"/> <!-- this action will be executed only if context.get("firstname").equals("foo") -->
         <action service="test.groovy" />
     </action>
-
- *  [restful.properties](http://github.com/jcheype/nugoh/blob/master/paxrunner/runner/restful.properties):
-    this file contain action id to call and Restful url definition, parameters are set in the context map
-
+    
 
 Development
 --------------------
