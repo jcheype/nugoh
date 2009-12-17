@@ -1,0 +1,10 @@
+<actions>
+    <action id="flow1" service="workflow" name="foo" >
+		<!-- <action service="test.js" name="foo" /> -->
+	</action>
+    <action id="flow2" service="workflow">
+        <!-- <action service="test.js" name="foo" /> -->
+        <action service="sample" name="bar" />
+        <action service="sample" name="foobar" />
+    </action>
+</actions>
