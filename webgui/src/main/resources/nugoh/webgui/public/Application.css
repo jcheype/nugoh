@@ -1,0 +1,113 @@
+/** Add css rules here for your application. */
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+.listItem{
+    width: 100%;
+    padding-right: 3px;
+}
+
+.serviceItem{
+    width: 100%;
+    margin-bottom: 3px;
+    padding: 2px;
+    border: 1px solid #AAA;
+    -moz-border-radius: 3px;
+    border-radius: 3px
+    box-shadow: 2px 2px 2px #CCC;
+    -moz-box-shadow: 2px 2px 2px #CCC;
+}
+
+.mainPanel{
+    width: 96%;
+    height: 100%;
+    margin-left:2%;
+}
+
+.gwt-DecoratorPanel .middleCenter {
+   height: 100%;
+   width: 100%;
+}
+
+.centerPanelDecorator .middleCenterInner, .sidePanelDecorator .middleCenterInner{
+    padding: 10px;
+    height: 100%;    
+}
+
+.actionPanel{
+    width: 100%;
+}
+/*
+.actionItem{
+    margin: 3px;
+    width: 100%;
+    display: block;
+
+}
+*/
+
+.actionItem{
+    width: 100%;
+}
+
+.actionItem .header{
+    padding-left: 3px;
+    padding-right: 3px;
+    width: 100%;
+    border: 1px solid #AAA;
+    -moz-border-radius: 3px;
+    border-radius: 3px
+    box-shadow: 2px 2px 2px #CCC;
+    -moz-box-shadow: 2px 2px 2px #CCC;
+    height: 20px;
+}
+
+.actionPanel .header .title{
+    float: left;
+    display: block;
+    width: 90%;
+}
+
+.actionPanel .header .delete{
+    float: right;
+}
+
+.actionItem .content{
+    width: 100%;
+    margin-top: 2px;
+    padding: 3px;
+    clear:both;
+    display: none;
+}
+
+.actionItem .content .attributes{
+}
+
+
+/* COLORS */
+.color1 {
+    background-color: #b3e2cd;
+}
+.color2 {
+    background-color: #fdcdac;
+}
+.color3 {
+    background-color: #cbd5e8;
+}
+.color4 {
+    background-color: #f4cae4;
+}
+.color5 {
+    background-color: #e6f5c9;
+}
+.color6 {
+    background-color: #fff2ae;
+}
+.color7 {
+    background-color: #f1e2cc;
+}
+.color8 {
+    background-color: #cccccc;
+}

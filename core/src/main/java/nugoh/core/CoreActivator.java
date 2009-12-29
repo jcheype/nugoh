@@ -1,6 +1,7 @@
 package nugoh.core;
 
 import nugoh.sdk.ActionFactory;
+import nugoh.sdk.ServiceInfo;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -18,31 +19,45 @@ import java.util.Properties;
 public class CoreActivator implements BundleActivator {
     private final Logger logger = LoggerFactory.getLogger(CoreActivator.class);
 
-    private ServiceRegistration sReg;
+    private ServiceRegistration sRegFactory;
+    private ServiceRegistration sRegServiceInfo;
 
-    private ServiceRegistration registerService(BundleContext bundleContext, ActionFactory actionFactory) {
+    private ServiceRegistration registerFactory(BundleContext bundleContext, ActionFactory actionFactory) {
         Properties props = new Properties();
         props.put("type", "ActionFactory");
         props.put("name", "ActionFactory");
         props.put("MainApplication", "nugoh");
-
         logger.debug("registering: ActionFactory");
-
         return bundleContext.registerService(ActionFactory.class.getName(), actionFactory, props);
+    }
+
+    private ServiceRegistration registerServiceInfo(BundleContext bundleContext, ServiceInfo serviceInfo) {
+        Properties props = new Properties();
+        props.put("type", "ServiceInfo");
+        props.put("name", "ServiceInfo");
+        props.put("MainApplication", "nugoh");
+        logger.debug("registering: ServiceInfo");
+        return bundleContext.registerService(ServiceInfo.class.getName(), serviceInfo, props);
     }
 
     @Override
     public void start(BundleContext bundleContext) throws Exception {
         logger.info("STARTING FACTORY SERVICE");
         ActionFactory actionFactory = new ActionFactoryOSGIImpl(bundleContext);
-        sReg = registerService(bundleContext, actionFactory);
-        if(sReg == null){
+        sRegFactory = registerFactory(bundleContext, actionFactory);
+        if(sRegFactory == null){
             throw new IllegalStateException("Cannot resgister factory Service");
+        }
+
+        ServiceInfo serviceInfo = new ServiceInfoOSGIImpl(bundleContext);
+        sRegServiceInfo = registerServiceInfo(bundleContext, serviceInfo);
+        if(sRegServiceInfo == null){
+            throw new IllegalStateException("Cannot resgister serviceInfo Service");
         }
     }
 
     @Override
     public void stop(BundleContext bundleContext) throws Exception {
-        sReg.unregister();
+        sRegFactory.unregister();
     }
 }

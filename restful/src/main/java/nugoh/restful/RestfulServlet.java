@@ -10,8 +10,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,37 +25,95 @@ import java.util.Map;
  */
 public class RestfulServlet extends HttpServlet {
     private final Logger logger = LoggerFactory.getLogger(RestfulServlet.class);
-    private NamedPattern namedPattern;
-    private String serviceId;
-    private ActionFactory factory;
 
-    public void setFactory(ActionFactory factory) {
-        this.factory = factory;
+    private ActionFactory actionFactory;
+    private File configFile;
+    private long lastModified = 0;
+
+    private Map<String, NamedPattern> aliasMap = new HashMap();
+    private Map<String, String> serviceIdMap = new HashMap();
+
+    public void setActionFactory(ActionFactory actionFactory) {
+        this.actionFactory = actionFactory;
+    }
+
+    private String getAliasFromRestfulUri(String uri) {
+        String alias = uri.substring(0, uri.indexOf('{') - 1);
+        return  alias;
+    }
+
+    synchronized private void reloadConfig() throws IOException {
+        if (lastModified != configFile.lastModified()) {
+            lastModified = configFile.lastModified();
+
+            Properties properties = new Properties();
+            properties.load(new FileInputStream(configFile));
+
+            aliasMap.clear();
+            serviceIdMap.clear();
+            for (Object key : properties.keySet()) {
+                String serviceId = (String) key;
+                String restfulUri = properties.getProperty(serviceId);
+                String alias = getAliasFromRestfulUri(restfulUri);
+                logger.debug("adding alias: " + alias);
+                aliasMap.put(alias, new NamedPattern(restfulUri));
+                serviceIdMap.put(alias, serviceId);
+            }
+        }
+    }
+
+    private String getAliasFormQS(String queryString){
+        logger.debug("searching alias: " + queryString);
+        if(queryString == null || queryString.length() < 1){
+            return null;
+        }
+
+        if(aliasMap.containsKey(queryString)){
+            return queryString;
+        }
+
+        String newQueryString = queryString.substring(0,queryString.lastIndexOf('/'));
+        return getAliasFormQS(newQueryString);
+    }
+
+    private void checkConfigFile() throws ServletException, IOException {
+        if (!configFile.exists()) {
+            logger.error("Configuration file does not exists: " + configFile.getAbsolutePath());
+            throw new ServletException("Configuration file does not exists");
+        }
+
+        if (lastModified != configFile.lastModified()) {
+            reloadConfig();
+        }
     }
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
 
-        String uriTemplate = config.getInitParameter("uri-template");
-        logger.debug("URI Template: " + uriTemplate);
-        namedPattern = new NamedPattern(uriTemplate);
-
-        serviceId = config.getInitParameter("service-id");
-
+        String configPath = System.getProperty("nugoh.restful", "restful.properties");
+        configFile = new File(configPath);
+        logger.info("using config file: " + configFile.getAbsolutePath());
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Action action = factory.retrieveAction(serviceId);
-        logger.debug(req.getQueryString());
+        checkConfigFile();
+        String requestURI = req.getRequestURI().substring(req.getServletPath().length());
+        logger.debug(requestURI);
+        String alias = getAliasFormQS(requestURI);
+        if(alias == null){
+            throw new ServletException("no alias for queryString: " + requestURI);
+        }
+
+        Action action = actionFactory.retrieveAction(serviceIdMap.get(alias));
         try {
-            action.run(namedPattern.getMap(req.getRequestURI()));
+            action.run(aliasMap.get(alias).getMap(requestURI));
         } catch (Exception e) {
             String msg = "Error while trying run action";
             logger.error(msg, e);
             throw new ServletException(msg);
         }
-        resp.getOutputStream().print(namedPattern.toString());
+        resp.getOutputStream().print(aliasMap.get(alias).toString());
     }
 }

@@ -13,6 +13,7 @@
         interface="nugoh.service.workflow.Workflow">
         <osgi:service-properties>
             <entry key="service" value="workflow" />
+            <entry key="type" value="pojo" />            
         </osgi:service-properties>
     </osgi:service>
 

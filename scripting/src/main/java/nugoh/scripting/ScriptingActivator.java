@@ -83,6 +83,8 @@ public class ScriptingActivator implements BundleActivator {
     private ServiceRegistration registerPojo(Object pojo, String serviceId) {
         Dictionary props = new Properties();
         props.put("service", serviceId);
+        props.put("type", "factory");
+
         return bundleContext.registerService(pojo.getClass().getName(), pojo, props);
     }
 

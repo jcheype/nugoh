@@ -13,6 +13,7 @@
         interface="nugoh.service.sample.SimplePojo">
         <osgi:service-properties>
             <entry key="service" value="sample" />
+            <entry key="type" value="pojo" />
         </osgi:service-properties>
     </osgi:service>
 </beans>
