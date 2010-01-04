@@ -14,6 +14,7 @@
     <modules>
         <module>sample</module>
         <module>workflow</module>
+        <module>folderwatcher</module>
   </modules>
 
 

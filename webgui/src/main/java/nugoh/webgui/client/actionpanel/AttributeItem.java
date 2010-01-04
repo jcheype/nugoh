@@ -17,7 +17,8 @@ public class AttributeItem extends Composite {
     private final TextBox textBox = new TextBox();
     public AttributeItem(String labelText) {
         name = labelText;
-        label = new Label(labelText);
+        label = new Label(labelText + " : ");
+        label.addStyleName("attributeLabel");
         HorizontalPanel hpanel = new HorizontalPanel();
         hpanel.add(label);
         hpanel.add(textBox);

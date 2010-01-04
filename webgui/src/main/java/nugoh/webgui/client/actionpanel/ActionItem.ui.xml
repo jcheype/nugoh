@@ -1,11 +1,15 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-    <g:HTMLPanel styleName="actionItem">
-        <g:HTMLPanel ui:field='header' styleName="header">
-            <g:Label ui:field='title' styleName="title">Title</g:Label>
-            <g:Button ui:field='delete' styleName="delete">X</g:Button>
-        </g:HTMLPanel>
-
+    <ui:with field='res' type='nugoh.webgui.client.Resources'/>
+    <g:FlowPanel ui:field='mainPanel'>
+        <g:DisclosurePanel ui:field='disclosurePanel' styleName="actionItem" animationEnabled='true'>
+            <g:customHeader>
+                <g:FlowPanel ui:field='header' styleName="customHeader">
+                    <g:Image ui:field='headerIcon' resource="{res.header}"/>
+                    <g:Label ui:field='title' styleName="title">Title</g:Label>
+                    <g:Button ui:field='delete' styleName="delete">X</g:Button>
+                </g:FlowPanel>
+            </g:customHeader>
             <g:FlowPanel ui:field='content' styleName="content">
                 <g:FlowPanel ui:field='attributesPanel' styleName="attributes">
 
@@ -13,5 +17,6 @@
                 <g:FlowPanel ui:field='subActionsPanel' styleName="subActions">
                 </g:FlowPanel>
             </g:FlowPanel>
-    </g:HTMLPanel>
+        </g:DisclosurePanel>
+    </g:FlowPanel>
 </ui:UiBinder>

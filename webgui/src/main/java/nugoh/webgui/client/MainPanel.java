@@ -1,12 +1,10 @@
 package nugoh.webgui.client;
 
-import com.allen_sauer.gwt.dnd.client.DragContext;
-import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
-import nugoh.webgui.client.actionpanel.ActionItem;
 import nugoh.webgui.client.actionpanel.ActionPanel;
-import nugoh.webgui.client.servicepanel.ServiceItem;
 import nugoh.webgui.client.servicepanel.ServicePanel;
 
 /**
@@ -26,6 +24,28 @@ public class MainPanel extends Composite {
 
         final SplitLayoutPanel dock = new SplitLayoutPanel();
         dock.addStyleName("mainPanel");
+
+// TEST MENU       
+        MenuBar menu = new MenuBar();
+        menu.setAutoOpen(true);
+        menu.setWidth("99%");
+        menu.setAnimationEnabled(true);
+        dock.addNorth(menu, 30);
+
+
+        MenuBar fileMenu = new MenuBar(true);
+        fileMenu.setAnimationEnabled(true);
+        menu.addItem(new MenuItem("File", fileMenu));
+
+        fileMenu.addSeparator();
+        fileMenu.addItem("load from Server", new Command() {
+
+            public void execute() {
+                Window.alert("json: " + actionPanel.toJSON().toString());
+            }
+        });
+        fileMenu.addSeparator();
+
 
         final DecoratorPanel servicePanelDecorator = new DecoratorPanel();
         servicePanelDecorator.setWidget(this.servicePanel);

@@ -1,0 +1,13 @@
+Bundle-Version:\
+  ${pom.version}
+
+Bundle-SymbolicName:\
+  nugoh.service.folderwatcher
+
+Import-Package:\
+  *
+Embed-Transitive:\
+  true
+
+Embed-Dependency:\
+  *;scope=compile

@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,6 +21,10 @@ public abstract class FolderWatcher implements Runnable {
     private final long interval;
     private final File rootFolder;
 
+    private boolean isRecursive = false;
+    private String filter = "[^\\.].*";
+    private Pattern pattern;
+
     private Map<String, Long> lastModifiedMap = new HashMap();
 
     public FolderWatcher(File rootFolder) {
@@ -28,34 +34,39 @@ public abstract class FolderWatcher implements Runnable {
     public FolderWatcher(File rootFolder, long interval) {
         this.interval = interval;
         this.rootFolder = rootFolder;
-        if(!rootFolder.isDirectory()){
+        if (!rootFolder.isDirectory()) {
             throw new IllegalStateException("Root folder must be a folder");
         }
     }
 
     @Override
     public void run() {
-        try{
-            while(true){
+        pattern = Pattern.compile(filter);
+        try {
+            while (true) {
                 scanFolder(rootFolder);
                 Thread.sleep(interval);
             }
-        }catch( InterruptedException e){
-            logger.info("FileWatcher interrupted");            
+        } catch (InterruptedException e) {
+            logger.info("FileWatcher interrupted");
         }
     }
 
     private void scanFolder(File folder) {
-        for(File file : folder.listFiles()){
-            if(file.isDirectory()){
-                scanFolder(file);
-            }
-            else{
-                Long lastModified = lastModifiedMap.get(file.getAbsolutePath());
-                if(lastModified == null || lastModified != file.lastModified()){
-                    logger.debug("file modified: " + file.getAbsolutePath());                    
-                    lastModifiedMap.put(file.getAbsolutePath(), file.lastModified());
-                    onChange(file);
+        for (File file : folder.listFiles()) {
+            if (file.isDirectory()) {
+                if (isRecursive) {
+                    scanFolder(file);
+                }
+            } else {
+                Matcher matcher = pattern.matcher(file.getName());
+                if (matcher.matches()) {
+                    Long lastModified = lastModifiedMap.get(file.getAbsolutePath());
+                    if (lastModified == null || lastModified != file.lastModified()) {
+                        logger.debug("file modified: " + file.getAbsolutePath());
+                        lastModifiedMap.put(file.getAbsolutePath(), file.lastModified());
+                        onChange(file);
+                    }
                 }
             }
         }

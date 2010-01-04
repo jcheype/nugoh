@@ -20,6 +20,7 @@ public class ServiceItem extends Composite implements HasDragHandle {
         label = new Label(serviceDescription.getName());
 
         label.setStyleName("serviceItem");
+        label.addStyleName(serviceDescription.getColor());
 
         initWidget(label);
     }

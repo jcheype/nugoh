@@ -33,11 +33,16 @@ html, body {
 
 .centerPanelDecorator .middleCenterInner, .sidePanelDecorator .middleCenterInner{
     padding: 10px;
-    height: 100%;    
+    height: 100%;
 }
 
 .actionPanel{
     width: 100%;
+}
+
+.actionPanel.empty{
+    height: 20;
+    border: dotted 1px #333;
 }
 /*
 .actionItem{
@@ -49,12 +54,12 @@ html, body {
 */
 
 .actionItem{
+    min-width:400px;
     width: 100%;
 }
 
-.actionItem .header{
-    padding-left: 3px;
-    padding-right: 3px;
+.actionItem .customHeader{
+    text-indent: 5px;
     width: 100%;
     border: 1px solid #AAA;
     -moz-border-radius: 3px;
@@ -62,29 +67,61 @@ html, body {
     box-shadow: 2px 2px 2px #CCC;
     -moz-box-shadow: 2px 2px 2px #CCC;
     height: 20px;
+    margin-bottom: 3px;
 }
 
-.actionPanel .header .title{
-    float: left;
-    display: block;
-    width: 90%;
+.actionPanel .customHeader img{
+    margin-top: 1px;
+    margin-left: 3px;
+    float:left;
 }
 
-.actionPanel .header .delete{
+.actionPanel .customHeader .title{
+    display:inline;
+}
+
+.actionPanel .customHeader .delete{
     float: right;
+    margin-right:5px;
 }
 
 .actionItem .content{
-    width: 100%;
+    width: 97%;
+    margin-left: 2%;
     margin-top: 2px;
-    padding: 3px;
     clear:both;
-    display: none;
+    margin-bottom: 5px;
+    /*display: none;*/
 }
 
-.actionItem .content .attributes{
+.actionItem .content input[type="text"], .actionItem .content textarea
+{
+    font-family: Arial, Sans-Serif;
+    font-size: 12px;
+    margin-bottom: 5px;
+    display: block;
+    padding: 2px;
+    border: solid 1px #AAA;
+    width: 200px;
 }
 
+.actionItem .content .attributeLabel{
+    margin-right: 5px;
+    width: 100px;
+}
+
+.actionItem a.header{
+    text-decoration:none;
+    color: #000;
+}
+
+a:active{
+    outline: none;
+}
+
+a:focus{
+    -moz-outline-style: none;
+}
 
 /* COLORS */
 .color1 {

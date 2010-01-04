@@ -19,6 +19,10 @@ public class ServiceDescription extends JavaScriptObject {
 
     public final native String getName() /*-{ return this.serviceName; }-*/;
 
+    public final String getColor(){
+        return "color" + (Math.abs(getName().hashCode()) % 8 + 1);
+    }
+
     public final native boolean isSubnodes() /*-{ return this.subnodes; }-*/;
 
     public final native JsArray<String> getAttributes() /*-{ return this.parameters;  }-*/;
