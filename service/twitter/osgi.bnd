@@ -1,0 +1,13 @@
+Bundle-Version:\
+  ${pom.version}
+
+Bundle-SymbolicName:\
+  nugoh.service.twitter
+
+Import-Package:\
+  *
+Embed-Transitive:\
+  true
+
+Embed-Dependency:\
+  *;scope=compile
