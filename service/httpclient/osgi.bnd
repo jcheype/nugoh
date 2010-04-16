@@ -5,6 +5,10 @@ Bundle-SymbolicName:\
   nugoh.service.httpclient
 
 Import-Package:\
+  !com.sun.jdmk.comm,\
+  !javax.jms,\
+  !javax.mail,\
+  !javax.mail.internet,\
   *
 Embed-Transitive:\
   true

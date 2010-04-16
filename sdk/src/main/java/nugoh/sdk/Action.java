@@ -9,5 +9,5 @@ import java.util.Map;
  * Time: 2:24:32 PM
  */
 public interface Action {
-    public void run(Map<String, Object> context) throws Exception, Throwable;
+    public void run(Map<String, Object> context) throws Exception;
 }

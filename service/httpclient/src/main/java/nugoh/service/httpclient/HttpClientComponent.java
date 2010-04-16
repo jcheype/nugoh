@@ -71,7 +71,6 @@ public class HttpClientComponent {
             }
         }
 
-
         HttpMethod httpMethod;
         if ("GET".equals(getMethod())) {
             httpMethod = new GetMethod(url);

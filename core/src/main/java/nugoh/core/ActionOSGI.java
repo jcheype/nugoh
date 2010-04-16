@@ -96,13 +96,12 @@ public class ActionOSGI implements Action, ServiceListener {
         return actionProxy;
     }
 
-    @Override
     public void run(Map<String, Object> context) throws Exception {
         ActionProxy action = actionProxy;
         if (action == null) {
             action = getActionProxy();
             if (action == null) {
-                throw new IllegalStateException("service not found");
+                throw new IllegalStateException("service not found: " + service);
             }
         }
         if (!action.isInitialized()) {
@@ -111,7 +110,6 @@ public class ActionOSGI implements Action, ServiceListener {
         action.run(context);
     }
 
-    @Override
     synchronized public void serviceChanged(ServiceEvent serviceEvent) {
         if (logger.isDebugEnabled()) {
             logger.debug("New Action service event");

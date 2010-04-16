@@ -87,7 +87,6 @@ public class ActionProxy implements ActionInit {
 
     }
 
-    @Override
     synchronized public void init() throws InvocationTargetException, IllegalAccessException {
         if(initMethod != null && !initialized){
             initMethod.invoke(pojoAction);
@@ -95,7 +94,6 @@ public class ActionProxy implements ActionInit {
         initialized = true;
     }
 
-    @Override
     public void run(Map<String, Object> context) throws InvocationTargetException, IllegalAccessException {
         if(!isInitialized()){
             throw new IllegalStateException("Trying to run a non initialized service");

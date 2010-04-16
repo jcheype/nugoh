@@ -21,7 +21,7 @@ case class ScalaTest() {
 
 
   def init() = {
-    for (i <- 0 until 200000) {
+    for (i <- 0 until 100000) {
       val e = new Echo()
       e.start()
       actors = e :: actors
