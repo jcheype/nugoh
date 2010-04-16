@@ -8,11 +8,28 @@
         <groupId>nugoh.service</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>sample</artifactId>
-    <name>sample</name>
+    <artifactId>httpclient</artifactId>
+    <name>httpclient</name>
     <packaging>bundle</packaging>
-    
+
     <dependencies>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

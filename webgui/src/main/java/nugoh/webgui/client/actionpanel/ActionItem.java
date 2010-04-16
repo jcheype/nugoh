@@ -22,10 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-//import static com.google.gwt.query.client.Effects.Effects;
-//import static com.google.gwt.query.client.Effects.Speed;
-//import static com.google.gwt.query.client.GQuery.$;
+import nugoh.webgui.client.editinplace.EditInPlace;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,58 +34,88 @@ public class ActionItem extends Composite implements HasDragHandle {
 
     interface ActionItemUiBinder extends UiBinder<Widget, ActionItem> {
     }
-
     private static ActionItemUiBinder uiBinder = GWT.create(ActionItemUiBinder.class);
-
-
     private final ServiceDescription serviceDescription;
-
     private final List<AttributeItem> attributes = new ArrayList();
     private final List<ActionItem> actionItems = new ArrayList();
-
+    private boolean showDetails = false;
     @UiField
     Panel mainPanel;
-
     @UiField
     DisclosurePanel disclosurePanel;
-
     @UiField
     Label title;
-
     @UiField
-    Button delete;
-
+    Image delete;
+    @UiField
+    Image details;
     @UiField
     Panel attributesPanel;
-
     @UiField
     Panel header;
-
     @UiField
     FlowPanel content;
-
     @UiField
     Panel subActionsPanel;
-    private final ActionPanel actionPanel;
-
     @UiField
     Image headerIcon;
+    @UiField
+    EditInPlace actionId;
+
+
+    private final ActionPanel actionPanel;
+
 
     @UiHandler("delete")
     void deleteClick(ClickEvent event) {
         ActionItem.this.removeFromParent();
     }
 
+    @UiHandler("details")
+    void detailsClick(ClickEvent event) {
+        toggleDetails();
+        if (disclosurePanel.isOpen()) {
+            event.stopPropagation();
+        }
+    }
+
+    public void toggleDetails() {
+        if (showDetails) {
+            hideDefaultAttributes();
+        } else {
+            showDefaultAttributes();
+        }
+        showDetails = !showDetails;
+    }
+
+    public void hideDefaultAttributes() {
+        for (AttributeItem attributeItem : attributes) {
+            if (attributeItem.isDefault()) {
+                attributeItem.setVisible(false);
+            }
+        }
+    }
+
+    public void showDefaultAttributes() {
+        for (AttributeItem attributeItem : attributes) {
+            if (attributeItem.isDefault()) {
+                attributeItem.setVisible(true);
+            }
+        }
+    }
+
     public ActionItem(ServiceDescription serviceDescription, ServicePanel servicePanel) {
         initWidget(uiBinder.createAndBindUi(this));
 
         disclosurePanel.addCloseHandler(new CloseHandler<DisclosurePanel>() {
+
             public void onClose(CloseEvent<DisclosurePanel> disclosurePanelCloseEvent) {
                 headerIcon.setResource(Resources.INSTANCE.header());
             }
         });
 
         disclosurePanel.addOpenHandler(new OpenHandler<DisclosurePanel>() {
+
             public void onOpen(OpenEvent<DisclosurePanel> disclosurePanelOpenEvent) {
                 headerIcon.setResource(Resources.INSTANCE.headerDown());
             }
@@ -97,15 +124,10 @@ public class ActionItem extends Composite implements HasDragHandle {
         header.addStyleName(serviceDescription.getColor());
         title.setText(serviceDescription.getName());
 
-        //ID
-        {
-            AttributeItem attributeItem = new AttributeItem("id");
-            attributesPanel.add(attributeItem);
-            attributes.add(attributeItem);
-        }
-        
         for (int i = 0; i < serviceDescription.getAttributes().length(); i++) {
-            AttributeItem attributeItem = new AttributeItem(serviceDescription.getAttributes().get(i));
+            String attributeName = serviceDescription.getAttributes().get(i);
+            String value = serviceDescription.getDefaultValue(attributeName);
+            AttributeItem attributeItem = new AttributeItem(attributeName, value);
             attributesPanel.add(attributeItem);
             attributes.add(attributeItem);
         }
@@ -117,6 +139,12 @@ public class ActionItem extends Composite implements HasDragHandle {
             actionPanel = null;
         }
         this.serviceDescription = serviceDescription;
+
+        hideDefaultAttributes();
+    }
+
+    public String getId(){
+        return actionId.getValue();
     }
 
     public Map<String, String> getAttributes() {
@@ -124,6 +152,8 @@ public class ActionItem extends Composite implements HasDragHandle {
         for (AttributeItem attributeItem : attributes) {
             result.put(attributeItem.getName(), attributeItem.getValue());
         }
+        result.put("id", getId());
+
         return result;
     }
 
@@ -135,6 +165,7 @@ public class ActionItem extends Composite implements HasDragHandle {
         return title;
     }
 
+
     public JSONValue toJSON() {
         JSONObject json = new JSONObject();
         JSONObject attributesJSON = new JSONObject();
@@ -143,11 +174,14 @@ public class ActionItem extends Composite implements HasDragHandle {
                 attributesJSON.put(attributeItem.getName(), new JSONString(attributeItem.getValue()));
             }
         }
+        if (getId().length() > 0) {
+            attributesJSON.put("id", new JSONString(getId()));
+        }
+
         json.put("attributes", attributesJSON);
         if (actionPanel != null) {
             json.put("subnodes", actionPanel.toJSON());
         }
         return json;
     }
-
 }

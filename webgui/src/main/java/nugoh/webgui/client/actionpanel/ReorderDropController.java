@@ -26,7 +26,6 @@ public class ReorderDropController extends AbstractInsertPanelDropController {
     @Override
     protected Widget newPositioner(DragContext dragContext) {
         HTML positioner = new HTML("<hr />");
-        //positioner.addStyleName(DragClientBundle.INSTANCE.css().flowPanelPositioner());
         return positioner;
     }
 }

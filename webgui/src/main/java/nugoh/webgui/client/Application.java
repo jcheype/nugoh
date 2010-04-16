@@ -3,7 +3,6 @@ package nugoh.webgui.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.*;
-import nugoh.webgui.client.MainPanel;
 import nugoh.webgui.client.injector.MyInjector;
 
 

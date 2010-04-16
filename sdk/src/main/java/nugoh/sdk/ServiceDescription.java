@@ -1,7 +1,9 @@
 package nugoh.sdk;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,6 +16,7 @@ public class ServiceDescription {
     private List<String> parameters = new ArrayList();
     private boolean subnodes = false;
     private boolean properties = false;
+    private Map<String, String> defaultValueMap = new HashMap();
 
     public String getServiceName() {
         return serviceName;
@@ -41,5 +44,9 @@ public class ServiceDescription {
 
     public void setProperties(boolean properties) {
         this.properties = properties;
+    }
+
+    public Map<String, String> getDefaultValueMap() {
+        return defaultValueMap;
     }
 }

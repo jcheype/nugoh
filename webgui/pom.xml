@@ -12,7 +12,7 @@
     </parent>
     <artifactId>webgui</artifactId>
     <packaging>war</packaging>
-    <name>gwt-maven-archetype-project</name>
+    <name>webgui</name>
 
     <properties>
 
@@ -37,9 +37,9 @@
             <version>2.0</version>
         </dependency>
         <dependency>
-            <groupId>google-gin</groupId>
-            <artifactId>google-gin</artifactId>
-            <version>0.0.1</version>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <!--<dependency>-->
         <!--<groupId>nugoh</groupId>-->

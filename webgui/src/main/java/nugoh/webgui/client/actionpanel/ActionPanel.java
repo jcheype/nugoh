@@ -5,8 +5,8 @@ import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.DropController;
 import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
 import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.*;
+import com.google.inject.Inject;
 import nugoh.webgui.client.servicepanel.ServiceItem;
 import nugoh.webgui.client.servicepanel.ServicePanel;
 
@@ -37,6 +37,7 @@ public class ActionPanel extends Composite{
     private final ServicePanel servicePanel;
     private final DropController drop;
 
+    @Inject
     public ActionPanel(final ServicePanel servicePanel) {
         pickupDragController = new PickupDragController(RootPanel.get(), false);
         reorderDropController = new ReorderDropController(panel);

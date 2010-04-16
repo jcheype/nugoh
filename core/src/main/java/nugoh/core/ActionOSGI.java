@@ -23,7 +23,7 @@ public class ActionOSGI implements Action, ServiceListener {
     private final ActionNode actionNode;
     private final long timeout;
     private ActionProxy actionProxy = null;
-    private Object notifier = new Object();
+    private final Object notifier = new Object();
     private final String service;
 
     public ActionOSGI(BundleContext bundleContext, ActionNode actionNode, long timeout) throws InvalidSyntaxException {
@@ -59,7 +59,7 @@ public class ActionOSGI implements Action, ServiceListener {
     }
 
     private ActionProxy createActionProxy(Object pojoAction) {
-        ActionProxy actionProxy;
+        ActionProxy myActionProxy;
         try {
             Object newPojoInstance;
             if(pojoAction instanceof PojoFactory){
@@ -72,13 +72,13 @@ public class ActionOSGI implements Action, ServiceListener {
             else{
                 newPojoInstance = pojoAction.getClass().newInstance();
             }
-            actionProxy = new ActionProxy(newPojoInstance , actionNode);
+            myActionProxy = new ActionProxy(newPojoInstance , actionNode);
         } catch (Exception e) {
             String msg = "cannot create pojo instance";
             logger.error(msg, e);
             throw new IllegalStateException(msg);
         }
-        return actionProxy;
+        return myActionProxy;
     }
 
     private void registerListener() throws InvalidSyntaxException {

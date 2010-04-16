@@ -12,4 +12,10 @@ public interface Resources extends ClientBundle {
 
     @ClientBundle.Source("icons/control-270.png")
     ImageResource headerDown();
+
+    @ClientBundle.Source("icons/cross.png")
+    ImageResource delete();
+
+    @ClientBundle.Source("icons/wrench.png")
+    ImageResource details();
 }

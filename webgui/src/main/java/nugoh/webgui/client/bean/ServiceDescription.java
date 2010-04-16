@@ -26,4 +26,8 @@ public class ServiceDescription extends JavaScriptObject {
     public final native boolean isSubnodes() /*-{ return this.subnodes; }-*/;
 
     public final native JsArray<String> getAttributes() /*-{ return this.parameters;  }-*/;
+
+    public final native String getDefaultValue(String attributeName) /*-{
+        return this.defaultValueMap[attributeName];
+    }-*/;
 }

@@ -1,6 +1,5 @@
 package nugoh.webgui.client;
 
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
@@ -14,38 +13,19 @@ import nugoh.webgui.client.servicepanel.ServicePanel;
  * Time: 11:13:53 PM
  */
 public class MainPanel extends Composite {
+
     private final ServicePanel servicePanel;
     private final ActionPanel actionPanel;
 
     @Inject
-    public MainPanel(final ServicePanel servicePanel) {
+    public MainPanel(final ServicePanel servicePanel, final ActionPanel actionPanel, final MainMenuBar menu) {
         this.servicePanel = servicePanel;
-        this.actionPanel = new ActionPanel(servicePanel);
+        this.actionPanel = actionPanel;
 
         final SplitLayoutPanel dock = new SplitLayoutPanel();
         dock.addStyleName("mainPanel");
 
-// TEST MENU       
-        MenuBar menu = new MenuBar();
-        menu.setAutoOpen(true);
-        menu.setWidth("99%");
-        menu.setAnimationEnabled(true);
-        dock.addNorth(menu, 30);
-
-
-        MenuBar fileMenu = new MenuBar(true);
-        fileMenu.setAnimationEnabled(true);
-        menu.addItem(new MenuItem("File", fileMenu));
-
-        fileMenu.addSeparator();
-        fileMenu.addItem("load from Server", new Command() {
-
-            public void execute() {
-                Window.alert("json: " + actionPanel.toJSON().toString());
-            }
-        });
-        fileMenu.addSeparator();
-
+        dock.addNorth(menu, 25);
 
         final DecoratorPanel servicePanelDecorator = new DecoratorPanel();
         servicePanelDecorator.setWidget(this.servicePanel);
@@ -53,11 +33,14 @@ public class MainPanel extends Composite {
 
         dock.addWest(servicePanelDecorator, 120);
 
+
         final DecoratorPanel centerPanelDecorator = new DecoratorPanel();
         centerPanelDecorator.addStyleName("centerPanelDecorator");
 
         centerPanelDecorator.setWidget(actionPanel);
         dock.add(centerPanelDecorator);
+
+
 
         initWidget(dock);
     }

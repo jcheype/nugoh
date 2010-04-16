@@ -12,12 +12,13 @@ import nugoh.webgui.client.servicepanel.ServicePanel;
  * Date: Dec 21, 2009
  * Time: 11:16:47 PM
  */
-public class MyClientModule  extends AbstractGinModule {
+public class MyClientModule extends AbstractGinModule {
+
     @Override
     protected void configure() {
-        //bind(ActionPanel.class).in(Singleton.class);
-        //bind(ServicePanel.class).in(Singleton.class);
+        bind(ServicePanel.class).in(Singleton.class);
         bind(GlobalHandlerManager.class).in(Singleton.class);
         bind(ServiceWatcher.class).in(Singleton.class);
+        bind(ActionPanel.class).in(Singleton.class);
     }
 }

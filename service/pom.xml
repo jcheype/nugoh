@@ -14,8 +14,9 @@
     <modules>
         <module>sample</module>
         <module>workflow</module>
+        <module>twitter</module>
         <module>folderwatcher</module>
-  </modules>
-
-
+        <module>httpclient</module>
+        <module>scalaTest</module>
+    </modules>
 </project>

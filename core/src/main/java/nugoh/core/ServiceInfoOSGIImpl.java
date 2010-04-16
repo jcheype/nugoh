@@ -5,7 +5,6 @@ import nugoh.sdk.PojoFactory;
 import nugoh.sdk.ServiceDescription;
 import nugoh.sdk.ServiceInfo;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceFactory;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,8 @@ public class ServiceInfoOSGIImpl implements ServiceInfo {
         this.bundleContext = bundleContext;
     }
 
-    private void serviceDescriptionFromPojo(Class clazz, ServiceDescription serviceDescription) throws IntrospectionException {
+    private void serviceDescriptionFromPojo(Object pojo, ServiceDescription serviceDescription) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
+        Class clazz = pojo.getClass();
         BeanInfo beanInfo = Introspector.getBeanInfo(clazz, Object.class);
         PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
 
@@ -44,10 +45,19 @@ public class ServiceInfoOSGIImpl implements ServiceInfo {
             } else if (m != null && ActionNode.class.isAssignableFrom(pd.getPropertyType())) {
                 serviceDescription.setSubnodes(true);
             }
+
+            m = pd.getReadMethod();
+            if (m != null ) {
+                Object defaultValue = m.invoke(pojo);
+                if(defaultValue != null){
+                    serviceDescription.getDefaultValueMap().put(pd.getName(), defaultValue.toString());
+                }
+            }
+
         }
     }
 
-    private ServiceDescription serviceDescriptionFromServiceReference(ServiceReference ref) throws IntrospectionException {
+    private ServiceDescription serviceDescriptionFromServiceReference(ServiceReference ref) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
         ServiceDescription serviceDescription = new ServiceDescription();
         Object pojo = bundleContext.getService(ref);
 
@@ -55,7 +65,7 @@ public class ServiceInfoOSGIImpl implements ServiceInfo {
 
         serviceDescription.setServiceName(serviceName);
 
-        serviceDescriptionFromPojo(pojo.getClass(), serviceDescription);
+        serviceDescriptionFromPojo(pojo, serviceDescription);
         return serviceDescription;
     }
 
@@ -67,7 +77,7 @@ public class ServiceInfoOSGIImpl implements ServiceInfo {
         String serviceName = (String) ref.getProperty("service");
         serviceDescription.setServiceName(serviceName);
 
-        serviceDescriptionFromPojo(pojo.getClass(), serviceDescription);
+        serviceDescriptionFromPojo(pojo, serviceDescription);
         return serviceDescription;
     }
 
@@ -89,7 +99,7 @@ public class ServiceInfoOSGIImpl implements ServiceInfo {
                 serviceDescriptionList.add(serviceDescriptionFromServiceReference(ref));
             }
         } catch (Exception e) {
-            logger.error("Cannot retrieve ServiceInfo pojo list");
+            logger.error("Cannot retrieve ServiceInfo pojo list" ,e);
         }
         return serviceDescriptionList;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -103,7 +113,7 @@ public class ServiceInfoOSGIImpl implements ServiceInfo {
                 serviceDescriptionList.add(serviceDescriptionFromServiceFactoryReference(ref));
             }
         } catch (Exception e) {
-            logger.error("Cannot retrieve ServiceInfo factory list");
+            logger.error("Cannot retrieve ServiceInfo factory list", e);
         }
         return serviceDescriptionList;  //To change body of implemented methods use File | Settings | File Templates.
     }
